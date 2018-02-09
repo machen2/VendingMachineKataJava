@@ -1,16 +1,20 @@
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class VendingMachineTest {
 
     VendingMachine vendingMachine;
+    @Mock
     VendingMachineModel model;
+
 
     @Before
     public void setup(){
-        model = new VendingMachineModel(0.0);
         vendingMachine = new VendingMachine(model);
     }
 
@@ -53,12 +57,8 @@ public class VendingMachineTest {
 
     @Test
     public void givenAVendingMachineWith30CentsWhenAddingANickelItShouldBe35(){
-        VendingMachineModel model = new VendingMachineModel(.30);
-        vendingMachine = new VendingMachine(model);
-
         vendingMachine.insertCoin("nickel");
-        Double actual = vendingMachine.getTotal();
 
-        assertEquals(.35, actual, .001);
+        verify(model).changeTotal(.05);
     }
 }
