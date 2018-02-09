@@ -1,8 +1,8 @@
 public class VendingMachine {
     VendingMachineModel model;
 
-    public VendingMachine(double total) {
-        model = new VendingMachineModel(total);
+    public VendingMachine(VendingMachineModel model) {
+        this.model = model;
     }
 
     public String insertCoin(String coin) {

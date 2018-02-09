@@ -6,10 +6,12 @@ import static org.junit.Assert.assertEquals;
 public class VendingMachineTest {
 
     VendingMachine vendingMachine;
+    VendingMachineModel model;
 
     @Before
     public void setup(){
-        vendingMachine = new VendingMachine(0.0);
+        model = new VendingMachineModel(0.0);
+        vendingMachine = new VendingMachine(model);
     }
 
     @Test
@@ -51,7 +53,8 @@ public class VendingMachineTest {
 
     @Test
     public void givenAVendingMachineWith30CentsWhenAddingANickelItShouldBe35(){
-        vendingMachine = new VendingMachine(.30);
+        VendingMachineModel model = new VendingMachineModel(.30);
+        vendingMachine = new VendingMachine(model);
 
         vendingMachine.insertCoin("nickel");
         Double actual = vendingMachine.getTotal();
