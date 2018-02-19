@@ -14,11 +14,13 @@ public class VendingMachineControllerTest {
     VendingMachineModel model;
     @Mock
     VendingMachineView view;
+    @Mock
+    Dispenser dispenser;
 
     @Before
     public void setup(){
         MockitoAnnotations.initMocks(this);
-        vendingMachineController = new VendingMachineController(model, view);
+        vendingMachineController = new VendingMachineController(model, view, dispenser);
     }
 
     @Test
@@ -74,9 +76,64 @@ public class VendingMachineControllerTest {
     }
 
     @Test
-    public void whenThereAreNoCoinsInsertedTheMachineReturnsInsertCoin(){
+    public void whenThereAreNoCoinsInsertedTheMachineReturnsTheStartingMessage(){
         vendingMachineController.start();
 
         verify(view).displayStartingMessage();
+    }
+
+    @Test
+    public void givenEnoughMoneyWhenTheColaIsSelectedThenColaIsDispensed(){
+        when(model.getTotal()).thenReturn(1.0);
+        vendingMachineController.productSelected("cola");
+
+        verify(dispenser).dispenseProduct("cola");
+    }
+
+    @Test
+    public void givenEnoughMoneyWhenTheColaIsSelectedThenAThankYouMessageIsDisplayed(){
+        when(model.getTotal()).thenReturn(1.0);
+        vendingMachineController.productSelected("cola");
+
+        verify(view).displayThankYouMessage();
+    }
+
+    @Test
+    public void givenNotEnoughMoneyWhenColaIsSelectedThenVendingMachineDisplaysInvalidPriceMessage(){
+        vendingMachineController.productSelected("cola");
+
+        verify(view).displayInvalidPriceMessage();
+    }
+
+    @Test
+    public void givenEnoughMoneyWhenChipsAreSelectedThenVendingMachineDisplaysThankYouMessage(){
+        when(model.getTotal()).thenReturn(.50);
+        vendingMachineController.productSelected("chips");
+
+        verify(view).displayThankYouMessage();
+    }
+
+    @Test
+    public void givenNotEnoughMoneyWhenChipsAreSelectedThenVendingMachineDisplaysInvalidPriceMessage(){
+        when(model.getTotal()).thenReturn(.49);
+        vendingMachineController.productSelected("chips");
+
+        verify(view).displayInvalidPriceMessage();
+    }
+
+    @Test
+    public void givenEnoughMoneyWhenCandyIsSelectedThenVendingMachineDisplaysThankYouMessage(){
+        when(model.getTotal()).thenReturn(.65);
+        vendingMachineController.productSelected("candy");
+
+        verify(view).displayThankYouMessage();
+    }
+
+    @Test
+    public void givenNotEnoughMoneyWhenCandyIsSelectedThenVendingMachineDisplaysInvalidPriceMessage(){
+        when(model.getTotal()).thenReturn(.64);
+        vendingMachineController.productSelected("candy");
+
+        verify(view).displayInvalidPriceMessage();
     }
 }

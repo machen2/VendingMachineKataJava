@@ -13,4 +13,12 @@ public class VendingMachineView {
     public void displayStartingMessage() {
         throw new NotImplementedException();
     }
+
+    public void displayThankYouMessage() {
+        throw new NotImplementedException();
+    }
+
+    public void displayInvalidPriceMessage() {
+        throw new NotImplementedException();
+    }
 }
